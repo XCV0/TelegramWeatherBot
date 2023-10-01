@@ -1,14 +1,16 @@
 import asyncio
-from create_bot import dp, bot
+from aiogram import Bot, Dispatcher
+from handlers import client
 
 
 async def main():
+    bot = Bot(token="TOKEN")
+    dp = Dispatcher()
+
+    dp.include_router(client.router)
+
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
-
-
-async def on_startup():
-    print("Bot success start up!")
-
 
 if __name__ == "__main__":
     asyncio.run(main())

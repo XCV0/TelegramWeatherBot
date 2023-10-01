@@ -1,15 +1,21 @@
-from aiogram import types
-from aiogram.filters import CommandStart
-from create_bot import dp, bot
+from aiogram import Router, F
+from aiogram.filters import Command
+from aiogram.types import Message
+
+router = Router()
 
 
-@dp.message(CommandStart())
-async def command_start_handler(message: types.Message):
-    await bot.send_message(message.from_user.id, "Привет!\n"
-                                                 "Этот бот поможет тебе узнать погоду в любом городе\n"
-                                                 "Напиши название города")
+@router.message(Command("start"))
+async def cmd_start(message: Message):
+    await message.answer(
+        "Привет!\n"
+        "Этот бот вам поможет узнать погоду в любом городе\n"
+        "Напишите название города"
+    )
 
 
-@dp.message()
-async def get_city_input(message: types.Message):
-    pass
+@router.message(F.text.lower() == "да")
+async def answer_yes(message: Message):
+    await message.answer(
+        "Это здорово!"
+    )
