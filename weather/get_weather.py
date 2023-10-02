@@ -18,10 +18,11 @@ async def on_startup():
 
 async def get_weather(city):
     global mgr
-    observation = mgr.weather_at_place('London,GB')
+    observation = mgr.weather_at_place(city)
     w = observation.weather
 
     return w
+
 # w.detailed_status         # 'clouds'
 # w.wind()                  # {'speed': 4.6, 'deg': 330}
 # w.humidity                # 87

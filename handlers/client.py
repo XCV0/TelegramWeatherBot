@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
+from weather import get_weather
 
 router = Router()
 
@@ -14,8 +15,8 @@ async def cmd_start(message: Message):
     )
 
 
-@router.message(F.text.lower() == "да")
+@router.message()
 async def answer_yes(message: Message):
     await message.answer(
-        "Это здорово!"
+        # get_weather.get_weather(city=message.text)
     )

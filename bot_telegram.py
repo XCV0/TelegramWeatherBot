@@ -1,6 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from handlers import client
+from weather import get_weather
 
 
 async def main():
@@ -8,6 +9,8 @@ async def main():
     dp = Dispatcher()
 
     dp.include_router(client.router)
+
+    await get_weather.on_startup()
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
