@@ -21,3 +21,5 @@ __The idea is very simple__, create a __user-friendly__ bot that can give the us
 - [ ] A lot of debugging :)
 - [ ] Complete project
 - [ ] Defend project
+# Idea of Update maybe i make
+## ChatGPT built-in bot, maybe chatgpt can help you with wear

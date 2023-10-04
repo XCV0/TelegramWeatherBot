@@ -1,5 +1,5 @@
 from pyowm import OWM
-import asyncio
+from pyowm.commons.exceptions import NotFoundError
 from pyowm.utils import timestamps
 from pyowm.utils.config import get_default_config
 
@@ -10,18 +10,28 @@ config_dict = get_default_config()
 config_dict['language'] = 'ru'
 
 
-async def on_startup():
+def on_startup():
     global mgr
-    owm = OWM('your free OWM API key', config_dict)
+    owm = OWM('4b6cb6e603d0f3d7a0b930e16be556d6', config_dict)
     mgr = owm.weather_manager()
 
 
-async def get_weather(city):
-    global mgr
-    observation = mgr.weather_at_place(city)
-    w = observation.weather
+def get_weather(city):
+    try:
+        global mgr
+        observation = mgr.weather_at_place(city)
+        w = observation.weather
 
-    return w
+        return w
+
+    except NotFoundError:
+        return False
+
+
+def more_weather(city):
+    forecast = mgr.weather_at_place(city, 'daily')
+    answer = forecast.will_be_clear_at(timestamps.tomorrow())
+
 
 # w.detailed_status         # 'clouds'
 # w.wind()                  # {'speed': 4.6, 'deg': 330}
