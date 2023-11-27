@@ -3,6 +3,7 @@ from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
 from weather import get_weather
 from msg_buttons.user_keybord import generate_keyboard
+from openai import chatgpt_advice
 
 router = Router()
 
@@ -21,11 +22,14 @@ async def answer_yes(message: Message):
     w = get_weather.get_weather(city=message.text)
 
     if w:
+        weather_text = f"Сейчас в городе {message.text} {w.detailed_status}" \
+                       f"\nНа улице {w.temperature('celsius')['temp']}°C, " \
+                       f"ощущается как {w.temperature('celsius')['feels_like']}°C" \
+                       f"\nВлажность {w.humidity}%"
+        
+        openai_query = chatgpt_advice.get_advice(weather=weather_text)
         await message.answer(
-            f"Сейчас в городе {message.text} {w.detailed_status}"
-            f"\nНа улице {w.temperature('celsius')['temp']}°C, "
-            f"ощущается как {w.temperature('celsius')['feels_like']}°C"
-            f"\nВлажность {w.humidity}%",
+            weather_text + f"\nСовет по одежде(By OpenAI){openai_query}",
             reply_markup=generate_keyboard(message.text)
         )
     else:

@@ -1,28 +1,22 @@
-import httpx
-import asyncio
+import requests
+import json
 
-client = httpx.AsyncClient()
-model = 'gpt-3.5-turbo'
-
-user = 123
-
-
-async def get_advice(weather):
-    history = [{"role": "system", "content": f"Посоветуй что одеть по этой погоде\n"
-                                             f"{weather}"},
+def get_advice(weather):
+    history = [{"role": "system", "content": f"Посоветуй что одеть по этой погоде\n{weather}"},
                {"role": "user", "content": "вопрос"}]
 
-    result = await client.post(
+    result = requests.post(
         url='https://api.openai.com/v1/chat/completions',
         headers={
-            "Authorization": "Bearer" + "",
+            "Authorization": "Bearer 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",
         },
         json={
-            'model': model,
+            'model': 'gpt-3.5-turbo',
             'messages': history,
-            'user': user 
         },
         timeout=20
     )
 
-    return result['choice'][0]['message']
+    print(result)
+    # response = result.json()
+    # return response['choices'][0]['message']['content']
